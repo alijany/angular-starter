@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 
 import { AppComponent } from './app.component'
-import { OperationsComponent } from './operations/operations.component'
+import { OperationsModule } from './operations/operations.module'
 
 @NgModule({
   declarations: [
-    AppComponent,
-    OperationsComponent
+    AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    OperationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
