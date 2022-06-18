@@ -10,6 +10,9 @@ import OperationsComponent from './operations.component'
   imports: [
     CommonModule
   ],
+  exports: [
+    OperationsComponent
+  ],
   providers: [
     OperationsService
   ]
