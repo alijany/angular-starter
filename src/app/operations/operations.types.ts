@@ -11,3 +11,8 @@ export interface Operand {
 export interface NumberAction extends Operand {
     action: Operators
 }
+
+export interface Operation {
+    operand: Operand | null;
+    numberAction: NumberAction;
+}

@@ -12,7 +12,9 @@ export default class OperationsComponent implements OnInit {
   operations?: string[]
 
   getOperations (): void {
-    this.operations = this.operationService.getOperations()
+    this.operationService.getActions().subscribe(
+      operand => console.log(operand)
+    )
   }
 
   ngOnInit (): void {
