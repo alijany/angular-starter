@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { OperationsService } from './operations.service'
 import { NumberAction, Operation } from './operations.types'
 
@@ -8,17 +9,26 @@ import { NumberAction, Operation } from './operations.types'
   styleUrls: ['./operations.component.scss']
 })
 export default class OperationsComponent implements OnInit {
-  constructor (private operationService: OperationsService) { }
+  constructor (
+    private operationService: OperationsService,
+    private snackBar: MatSnackBar
+  ) { }
 
   operations: Operation[] = []
+
+  isLoading = true
+
+  openSnackBar (message: string, action: string) {
+    this.snackBar.open(message, action)
+  }
 
   getActions (): void {
     this.operationService.getActions().subscribe(
       res => {
         if (res && 'error' in res) {
-          console.log(res) // TODO: show snackbar with description «Server Error»
-          return
+          return this.openSnackBar('«Server Error»', 'Ok')
         }
+        this.isLoading = false
         this.operations.push(res)
       }
     )

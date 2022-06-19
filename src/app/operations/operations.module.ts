@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { OperationsService } from './operations.service'
+import { NgModule } from '@angular/core'
+import { MaterialModule } from '../material/material.module'
 import OperationsComponent from './operations.component'
 import { OperationsPipe } from './operations.pipe'
+import { OperationsService } from './operations.service'
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { OperationsPipe } from './operations.pipe'
     OperationsPipe
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule
   ],
   exports: [
     OperationsComponent
