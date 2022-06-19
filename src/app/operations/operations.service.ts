@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { catchError, concatMap, from, map, Observable, of, shareReplay } from 'rxjs'
+import { catchError, concatMap, from, map, mergeMap, Observable, of, shareReplay } from 'rxjs'
 import { array, assert, Describe } from 'superstruct'
 import { Error, NumberAction, Operand, Operators } from './operations.types'
 import { NumberAction$, Operand$ } from './operations.types.dto'
@@ -23,7 +23,7 @@ export class OperationsService {
     [Operators.Multiply]: new URL('/multiply', this.baseURL)
   }
 
-  private cachedOperands: Map<Operators, Observable<Operand | Error>> = new Map()
+  private cachedOperands: Map<Operators, Observable<Operand | null>> = new Map()
 
   /**
    * TODO: extract to separate service
@@ -54,7 +54,7 @@ export class OperationsService {
     const url = String(this.operandURLs[action])
     const operand = this.http.get<Operand>(url).pipe(
       map(operand => this.validate(operand, Operand$)),
-      catchError(this.handleError(null)),
+      catchError(() => of(null)),
       shareReplay(1)
     )
     this.cachedOperands.set(action, operand)
@@ -66,8 +66,12 @@ export class OperationsService {
     return this.http.get<NumberAction[]>(url)
       .pipe(
         map(action => this.validate(action, array(NumberAction$))),
-        concatMap(actions => from(actions)),
-        // mergeMap(this.getOperand), // TODO: new brach mergeMap or move to getOperands
+        mergeMap(actions => from(actions)),
+        mergeMap(action => {
+          return this.getOperand(action).pipe(
+            map(operand => ({ operand, numberAction: action }))
+          )
+        }),
         catchError(this.handleError(null))
       )
   }
