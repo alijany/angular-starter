@@ -1,5 +1,4 @@
-
-import { TestPage } from '../pageobjects/app.po'
+import { TestPage } from './app.po'
 
 describe('test App', () => {
   let page: TestPage
