@@ -1,11 +1,13 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { catchError, concatMap, from, map, mergeMap, Observable, of, shareReplay } from 'rxjs'
+import { catchError, concatMap, from, map, mergeMap, Observable, of, shareReplay, tap } from 'rxjs'
 import { array, assert, Describe } from 'superstruct'
-import { Error, NumberAction, Operand, Operators } from './operations.types'
+import { Error, NumberAction, Operand, Operation, Operators } from './operations.types'
 import { NumberAction$, Operand$ } from './operations.types.dto'
+import { environment } from '../../environments/environment'
 
 type OperandsURLs = { [key in Operators]: URL }
+type CachedOperand = Map<Operators, Observable<Operand | null>>
 
 @Injectable()
 export class OperationsService {
@@ -13,17 +15,17 @@ export class OperationsService {
     this.getOperand = this.getOperand.bind(this)
   }
 
-  // TODO inject as Config
-  private readonly baseURL = new URL('http://localhost:3000')
+  private readonly baseURL = environment.baseURL
 
   private readonly numbersUrl = new URL('/numbers', this.baseURL)
 
-  private readonly operandURLs: OperandsURLs = {
+  private readonly operandURL: OperandsURLs = {
     [Operators.Add]: new URL('/add', this.baseURL),
     [Operators.Multiply]: new URL('/multiply', this.baseURL)
   }
 
-  private cachedOperands: Map<Operators, Observable<Operand | null>> = new Map()
+  // cachedOperands holds Operator-Operand pairs
+  private cachedOperands: CachedOperand = new Map()
 
   /**
    * TODO: extract to separate service
@@ -43,17 +45,27 @@ export class OperationsService {
     }
   }
 
-  private validate<T> (value: T, schema: Describe<T>): T {
+  /**
+   * Assert that value is valid according to a schema.
+   * If the value is invalid an error will be thrown.
+   *
+   * @param data - value to check is valid according to a schema
+   * @param schema - schema to describe the structure of data
+   */
+  private validate<T> (value: T, schema: Describe<T>): void {
     assert(value, schema)
-    return value
   }
 
-  getOperand ({ action }: { action: Operators }) {
+  /**
+   * @param NumberAction - an action that is used to get the appropriate operand
+   * @returns Observable<Operand | null>
+   */
+  getOperand ({ action }: { action: Operators }): Observable<Operand | null> {
     const cachedOperand = this.cachedOperands.get(action)
     if (cachedOperand) return cachedOperand
-    const url = String(this.operandURLs[action])
+    const url = String(this.operandURL[action])
     const operand = this.http.get<Operand>(url).pipe(
-      map(operand => this.validate(operand, Operand$)),
+      tap(operand => this.validate(operand, Operand$)),
       catchError(() => of(null)),
       shareReplay(1)
     )
@@ -61,12 +73,20 @@ export class OperationsService {
     return operand
   }
 
-  getActions () {
+  /**
+   * get action and theme corresponding operand,
+   * then returns appropriate operation
+   *
+   * @returns Observable<Operation | Error>
+   */
+  getActions (): Observable<Operation | Error> {
     const url = String(this.numbersUrl)
     return this.http.get<NumberAction[]>(url)
       .pipe(
-        map(action => this.validate(action, array(NumberAction$))),
-        mergeMap(actions => from(actions)),
+        // validate server response
+        tap(action => assert(action, array(NumberAction$))),
+        concatMap(actions => from(actions)),
+        // get operand of each operator and return operation
         mergeMap(action => {
           return this.getOperand(action).pipe(
             map(operand => ({ operand, numberAction: action }))
