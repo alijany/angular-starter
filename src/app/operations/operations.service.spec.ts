@@ -20,7 +20,7 @@ describe('OperationsService', () => {
   })
 
   it('#getOperations should return expected "operations"', (done: DoneFn) => {
-    httpClientSpy.get.and.returnValue(of(mockServerData.numbers))
+    httpClientSpy.get.and.returnValue(of([mockServerData.numbers[0]]))
     service.getOperations().subscribe({
       next: operation => {
         expect(is(operation, Operation$))
