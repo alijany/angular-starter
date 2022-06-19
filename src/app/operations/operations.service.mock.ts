@@ -1,5 +1,3 @@
-import { NgModule } from '@angular/core'
-import { InMemoryDbService, RequestInfo } from 'angular-in-memory-web-api'
 
 export const mockServerData = {
   numbers: [
