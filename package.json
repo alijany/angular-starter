@@ -35,11 +35,15 @@
     "@angular-devkit/build-angular": "^14.0.2",
     "@angular/cli": "~14.0.2",
     "@angular/compiler-cli": "^14.0.0",
+    "@cypress/schematic": "^2.0.0",
+    "@types/cypress": "^1.1.3",
     "@types/jasmine": "~4.0.0",
     "@types/json-server": "^0.14.4",
+    "@types/karma-jasmine-html-reporter": "^1.7.0",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
     "angular-in-memory-web-api": "^0.14.0",
+    "cypress": "^10.1.0",
     "eslint": "^8.17.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
@@ -51,6 +55,7 @@
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.0.0"
+    "karma-jasmine": "~5.0.0",
+    "karma-jasmine-html-reporter": "^2.0.0"
   }
 }
