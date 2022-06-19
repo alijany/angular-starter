@@ -16,3 +16,8 @@ export interface Operation {
     operand: Operand | null;
     numberAction: NumberAction;
 }
+
+export type Error<T = null> = {
+    data: T,
+    error: string
+}

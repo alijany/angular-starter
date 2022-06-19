@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { OperationsService } from './operations.service'
+import { NumberAction, Operation } from './operations.types'
 
 @Component({
   selector: 'app-operations',
@@ -9,15 +10,36 @@ import { OperationsService } from './operations.service'
 export default class OperationsComponent implements OnInit {
   constructor (private operationService: OperationsService) { }
 
-  operations?: string[]
+  operations: Operation[] = []
 
-  getOperations (): void {
+  private getOperation (action:NumberAction) {
+    this.operationService.getOperand(action).subscribe(
+      res => {
+        const hasError = 'error' in res
+        if (hasError) {
+          console.log('error')
+        }
+        this.operations.push({
+          operand: hasError ? res.data : res,
+          numberAction: action
+        })
+      }
+    )
+  }
+
+  getActions (): void {
     this.operationService.getActions().subscribe(
-      operand => console.log(operand)
+      res => {
+        if ('error' in res) {
+          console.log(res) // TODO: show snackbar with description «Server Error»
+          return
+        }
+        this.getOperation(res)
+      }
     )
   }
 
   ngOnInit (): void {
-    this.getOperations()
+    this.getActions()
   }
 }

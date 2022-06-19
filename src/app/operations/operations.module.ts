@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { OperationsService } from './operations.service'
 import OperationsComponent from './operations.component'
+import { OperationsPipe } from './operations.pipe'
 
 @NgModule({
   declarations: [
-    OperationsComponent
+    OperationsComponent,
+    OperationsPipe
   ],
   imports: [
     CommonModule

@@ -1,7 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { catchError, concatMap, from, map, mergeMap, Observable, of, shareReplay } from 'rxjs'
-import { NumberAction, Operand, Operation, Operators } from './operations.types'
+import { catchError, concatMap, from, map, Observable, of, shareReplay } from 'rxjs'
+import { array, assert, Describe } from 'superstruct'
+import { Error, NumberAction, Operand, Operators } from './operations.types'
+import { NumberAction$, Operand$ } from './operations.types.dto'
 
 type OperandsURLs = { [key in Operators]: URL }
 
@@ -21,7 +23,7 @@ export class OperationsService {
     [Operators.Multiply]: new URL('/multiply', this.baseURL)
   }
 
-  private cachedOperands: Map<Operators, Observable<{data:Operation, error:string|null}>> = new Map()
+  private cachedOperands: Map<Operators, Observable<Operand | Error>> = new Map()
 
   /**
    * TODO: extract to separate service
@@ -31,7 +33,7 @@ export class OperationsService {
    * @param data - value to return as the observable result
    */
   private handleError<T> (data: T) {
-    return (error: HttpErrorResponse): Observable<{data:T, error:string}> => {
+    return (error: HttpErrorResponse): Observable<Error<T>> => {
       return of({
         data,
         error: error.status === 0
@@ -41,35 +43,31 @@ export class OperationsService {
     }
   }
 
-  private getOperand (numberAction: NumberAction) {
-    const cachedOperand = this.cachedOperands.get(numberAction.action)
-    if (cachedOperand) {
-      return cachedOperand
-    } else {
-      const url = String(this.operandURLs[numberAction.action])
-      const getOperand = this.http.get<Operand>(url).pipe(
-        map(operand => ({ data: { operand, numberAction }, error: null })), // TODO add data validation
-        catchError(this.handleError({ operand: null, numberAction })),
-        shareReplay(1)
-      )
-      this.cachedOperands.set(numberAction.action, getOperand)
-      return getOperand
-    }
+  private validate<T> (value: T, schema: Describe<T>): T {
+    assert(value, schema)
+    return value
+  }
+
+  getOperand ({ action }: { action: Operators }) {
+    const cachedOperand = this.cachedOperands.get(action)
+    if (cachedOperand) return cachedOperand
+    const url = String(this.operandURLs[action])
+    const operand = this.http.get<Operand>(url).pipe(
+      map(operand => this.validate(operand, Operand$)),
+      catchError(this.handleError(null)),
+      shareReplay(1)
+    )
+    this.cachedOperands.set(action, operand)
+    return operand
   }
 
   getActions () {
-    return this.http.get<NumberAction[]>(String(this.numbersUrl))
+    const url = String(this.numbersUrl)
+    return this.http.get<NumberAction[]>(url)
       .pipe(
-        map(action => ({ data: action, error: null })), // TODO add data validation
-        catchError(this.handleError<undefined>(undefined))
-      )
-  }
-
-  getOperations (numberActions: Observable<NumberAction[]>) {
-    return numberActions
-      .pipe(
-        concatMap(numbers => from(numbers)),
-        mergeMap(this.getOperand),
+        map(action => this.validate(action, array(NumberAction$))),
+        concatMap(actions => from(actions)),
+        // mergeMap(this.getOperand), // TODO: new brach mergeMap or move to getOperands
         catchError(this.handleError(null))
       )
   }
