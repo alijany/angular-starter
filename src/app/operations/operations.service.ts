@@ -60,7 +60,7 @@ export class OperationsService {
    * @param NumberAction - an action that is used to get the appropriate operand
    * @returns Observable<Operand | null>
    */
-  getOperand ({ action }: { action: Operators }): Observable<Operand | null> {
+  private getOperand ({ action }: { action: Operators }): Observable<Operand | null> {
     const cachedOperand = this.cachedOperands.get(action)
     if (cachedOperand) return cachedOperand
     const url = String(this.operandURL[action])
@@ -79,12 +79,12 @@ export class OperationsService {
    *
    * @returns Observable<Operation | Error>
    */
-  getActions (): Observable<Operation | Error> {
+  getOperations (): Observable<Operation | Error> {
     const url = String(this.numbersUrl)
     return this.http.get<NumberAction[]>(url)
       .pipe(
         // validate server response
-        tap(action => assert(action, array(NumberAction$))),
+        tap(actions => this.validate(actions, array(NumberAction$))),
         concatMap(actions => from(actions)),
         // get operand of each operator and return operation
         mergeMap(action => {

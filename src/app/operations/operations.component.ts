@@ -23,12 +23,12 @@ export default class OperationsComponent implements OnInit {
   }
 
   getActions (): void {
-    this.operationService.getActions().subscribe(
+    this.operationService.getOperations().subscribe(
       res => {
+        this.isLoading = false
         if (res && 'error' in res) {
           return this.openSnackBar('«Server Error»', 'Ok')
         }
-        this.isLoading = false
         this.operations.push(res)
       }
     )
