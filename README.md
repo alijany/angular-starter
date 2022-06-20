@@ -1,5 +1,8 @@
 # AngularStarter
 
+[![CI](https://github.com/alijany/angular-starter/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/alijany/angular-starter/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/alijany/angular-starter/branch/master/graph/badge.svg?token=GIA8KTZF2I)](https://codecov.io/gh/alijany/angular-starter)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.2.
 
 ## Development server
