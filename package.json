@@ -30,16 +30,16 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@types/angular-material": "^1.1.73",
-    "@types/superstruct": "^0.8.2",
     "@angular-devkit/build-angular": "^14.0.2",
     "@angular/cli": "~14.0.2",
     "@angular/compiler-cli": "^14.0.0",
     "@cypress/schematic": "^2.0.0",
+    "@types/angular-material": "^1.1.73",
     "@types/cypress": "^1.1.3",
     "@types/jasmine": "~4.0.0",
     "@types/json-server": "^0.14.4",
     "@types/karma-jasmine-html-reporter": "^1.7.0",
+    "@types/superstruct": "^0.8.2",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
     "angular-in-memory-web-api": "^0.14.0",

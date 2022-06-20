@@ -8,6 +8,8 @@ on:
   workflow_dispatch:
   # Triggers the workflow on push or pull request events but only for the "mergeMap" branch
   push:
+    branch:
+      - master
     paths-ignore:
       - '.github/**'
       - '.coverage/**'
@@ -24,7 +26,7 @@ jobs:
   main:
     name: test 
     # The type of runner that the job will run on
-    runs-on: ubuntu-lates
+    runs-on: ubuntu-latest
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
