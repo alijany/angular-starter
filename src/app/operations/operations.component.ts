@@ -22,7 +22,7 @@ export default class OperationsComponent implements OnInit {
     this.snackBar.open(message, action)
   }
 
-  getActions (): void {
+  getOperations (): void {
     this.operationService.getOperations().subscribe(
       res => {
         this.isLoading = false
@@ -35,6 +35,6 @@ export default class OperationsComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    this.getActions()
+    this.getOperations()
   }
 }
