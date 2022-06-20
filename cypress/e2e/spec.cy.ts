@@ -4,7 +4,7 @@ describe('My First Test', () => {
     cy.contains('Angular Starter')
   })
 
-  it('should operations', () => {
+  it('should load operations', () => {
     cy.get('app-operations > div > mat-list', { timeout: 10000 }).should('be.visible')
   })
 })
