@@ -1,5 +1,5 @@
-import { OperationsPipe } from './operations.pipe'
-import { Operators } from './operations.types'
+import { OperationsPipe } from '../../../app/operations/operations.pipe'
+import { Operators } from '../../../app/operations/operations.types'
 
 describe('OperationsPipe', () => {
   it('create an instance', () => {

@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { of } from 'rxjs'
-import { MaterialModule } from '../material/material.module'
+import { MaterialModule } from '../../../app/material/material.module'
 
 import { cold, getTestScheduler } from 'jasmine-marbles'
-import OperationsComponent from './operations.component'
-import { OperationsPipe } from './operations.pipe'
-import { OperationsService } from './operations.service'
+import OperationsComponent from '../../../app/operations/operations.component'
+import { OperationsPipe } from '../../../app/operations/operations.pipe'
+import { OperationsService } from '../../../app/operations/operations.service'
 
 describe('OperationsComponent', () => {
   let component: OperationsComponent

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { OperationsService } from './operations.service'
-import { NumberAction, Operation } from './operations.types'
+import { Operation } from './operations.types'
 
 @Component({
   selector: 'app-operations',

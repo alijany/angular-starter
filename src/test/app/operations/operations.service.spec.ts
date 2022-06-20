@@ -2,9 +2,9 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { of } from 'rxjs'
 import { is } from 'superstruct'
 
-import { OperationsService } from './operations.service'
-import { mockServerData } from './operations.service.mock'
-import { Operation$ } from './operations.types.dto'
+import { OperationsService } from '../../../app/operations/operations.service'
+import { mockServerData } from '../app.service.mock'
+import { Operation$ } from '../../../app/operations/operations.types.dto'
 
 describe('OperationsService', () => {
   let service: OperationsService

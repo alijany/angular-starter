@@ -30,7 +30,8 @@
     "strictTemplates": true
   },
   "include": [
-    "cypress"
+    "cypress",
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules/cypress"
