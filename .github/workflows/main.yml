@@ -8,7 +8,6 @@ on:
   workflow_dispatch:
   # Triggers the workflow on push or pull request events but only for the "mergeMap" branch
   push:
-    branches: [ "mergeMap" ]
     paths-ignore:
       - '.github/**'
       - '.coverage/**'
