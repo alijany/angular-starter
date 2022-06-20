@@ -1,11 +1,15 @@
 <div>
-    <mat-list role="list" *ngIf="!isLoading">
-        <mat-list-item role="listitem" *ngFor="let operation of operations">
-            {{operation | operations}}
-        </mat-list-item>
-    </mat-list>
-
-    <div *ngIf="isLoading">
+    <div *ngIf="isLoading; else content">
         <mat-spinner></mat-spinner>
     </div>
+
+    <ng-template #content>
+        <mat-list role="list" *ngIf="!errorMsg">
+            <mat-list-item role="listitem" *ngFor="let operation of operations">
+                {{operation | operations}}
+            </mat-list-item>
+        </mat-list>
+
+        <p *ngIf="errorMsg">{{errorMsg}}</p>
+    </ng-template>
 </div>

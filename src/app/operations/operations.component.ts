@@ -18,6 +18,8 @@ export default class OperationsComponent implements OnInit {
 
   isLoading = true
 
+  errorMsg?: string
+
   openSnackBar (message: string, action: string) {
     this.snackBar.open(message, action)
   }
@@ -27,6 +29,7 @@ export default class OperationsComponent implements OnInit {
       res => {
         this.isLoading = false
         if (res && 'error' in res) {
+          this.errorMsg = res.error
           return this.openSnackBar('«Server Error»', 'Ok')
         }
         this.operations.push(res)
