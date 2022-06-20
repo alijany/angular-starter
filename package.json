@@ -24,14 +24,14 @@
     "@angular/platform-browser": "^14.0.0",
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
-    "@types/angular-material": "^1.1.73",
-    "@types/superstruct": "^0.8.2",
     "rxjs": "~7.5.0",
     "superstruct": "^0.16.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
+    "@types/angular-material": "^1.1.73",
+    "@types/superstruct": "^0.8.2",
     "@angular-devkit/build-angular": "^14.0.2",
     "@angular/cli": "~14.0.2",
     "@angular/compiler-cli": "^14.0.0",
