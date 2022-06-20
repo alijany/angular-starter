@@ -4,6 +4,8 @@ name: CI
 
 # Controls when the workflow will run
 on:
+  # manually
+  workflow_dispatch:
   # Triggers the workflow on push or pull request events but only for the "mergeMap" branch
   push:
     branches: [ "mergeMap" ]
@@ -15,9 +17,7 @@ on:
       - '**.md'
       - '**.gitignore'
       - '**.eslintrc.js'
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
